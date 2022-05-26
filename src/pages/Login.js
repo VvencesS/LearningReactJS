@@ -19,7 +19,6 @@ const Login = () => {
     dispatch(login(values.username, values.password))
       .then(() => {
         history.push("/dashboard");
-        window.location.reload();
       })
       .catch(() => {
         setLoading(false);
