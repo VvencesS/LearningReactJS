@@ -1,20 +1,34 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useHistory, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 
 import "../css/Login.css";
 
 import { login } from "../actions/login";
 
-export default function Login() {
+const Login = () => {
+  const [loading, setLoading] = useState(false);
+  const { isLoggedIn } = useSelector((state) => state.loginReducers);
+  const { message } = useSelector((state) => state.message);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const handleLogin = async (values) => {
-    dispatch(login(values.username));
-    await history.push("/dashboard");
+    setLoading(true);
+    dispatch(login(values.username, values.password))
+      .then(() => {
+        history.push("/dashboard");
+        window.location.reload();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
+
+  if (isLoggedIn) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <div className="login-wrapper">
@@ -33,7 +47,6 @@ export default function Login() {
         }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
             handleLogin(values);
             setSubmitting(false);
           }, 400);
@@ -72,15 +85,31 @@ export default function Login() {
               />
             </label>
             {errors.password && touched.password && errors.password}
-
-            <div style={{ paddingTop: 10 }}>
+            <div className="form-group">
+              <button className="btn btn-primary btn-block" disabled={loading} type="submit">
+                {loading && (
+                  <span className="spinner-border spinner-border-sm"></span>
+                )}
+                <span>Login</span>
+              </button>
+            </div>
+            {message && (
+              <div className="form-group">
+                <div className="alert alert-danger" role="alert">
+                  {message}
+                </div>
+              </div>
+            )}
+            {/* <div style={{ paddingTop: 10 }}>
               <button type="submit" disabled={isSubmitting}>
                 Login
               </button>
-            </div>
+            </div> */}
           </form>
         )}
       </Formik>
     </div>
   );
-}
+};
+
+export default Login;

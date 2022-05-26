@@ -6,6 +6,9 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+
 import Dashboard from "./pages/Dashboard.js";
 import Login from "./pages/Login.js";
 

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import '../css/Login.css';
 
 export default function Dashboard() {
-  const username = useSelector((state) => state.loginReducer);
+  const username = useSelector((state) => state.loginReducer.username);
 
   return (
     <div className="login-wrapper">

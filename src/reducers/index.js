@@ -1,12 +1,11 @@
 import { combineReducers } from "redux";
 
-import counter from "./counter";
-import loginReducer from "./login";
+import loginReducers from "./login";
+import message from "./message";
 
-const allReducers = combineReducers({
-  //counter,
-  loginReducer,
-  // add more reducers here
+const allReducers =  combineReducers({
+  loginReducers,
+  message,
 });
 
 export default allReducers;
